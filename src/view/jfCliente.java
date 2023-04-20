@@ -95,11 +95,6 @@ public class jfCliente extends javax.swing.JFrame {
         jtfEndereco.setToolTipText("endereco completo");
 
         jtfCPF.setToolTipText("informe somente núnueros");
-        jtfCPF.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jtfCPFFocusLost(evt);
-            }
-        });
         jtfCPF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfCPFActionPerformed(evt);
@@ -112,6 +107,11 @@ public class jfCliente extends javax.swing.JFrame {
         });
 
         jtfNome.setToolTipText("infomre o Nome");
+        jtfNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfNomeActionPerformed(evt);
+            }
+        });
         jtfNome.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jtfNomeKeyTyped(evt);
@@ -294,14 +294,6 @@ public class jfCliente extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jtfCPFKeyTyped
 
-    private void jtfCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfCPFFocusLost
-        // TODO add your handling code here:
-        if (!Validadores.isCPF(jtfCPF.getText())) {
-            JOptionPane.showMessageDialog(this, "CPF Inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
-            jtfCPF.requestFocus();
-        }
-    }//GEN-LAST:event_jtfCPFFocusLost
-
     private void jtfNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNomeKeyTyped
         // TODO add your handling code here:
         String nletras = "0123456789<>:?/~^}][{´`=+-_!|'\'@#$%¨&*()²³£¢¬§º°ª";
@@ -343,6 +335,10 @@ public class jfCliente extends javax.swing.JFrame {
     private void jbEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbEditarActionPerformed
+
+    private void jtfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfNomeActionPerformed
 
     /**
      * @param args the command line arguments
