@@ -6,6 +6,10 @@
 package view;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Cliente;
+import services.ClienteServicos;
+import services.ServicosFactory;
 import util.Validadores;
 
 /**
@@ -19,6 +23,39 @@ public class jfCliente extends javax.swing.JFrame {
      */
     public jfCliente() {
         initComponents();
+        addRowToTable();
+    }
+
+    public void validaInputs() {
+        if (jtfNome.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher nome");
+            jtfNome.requestFocus();
+        } else if (jtfCPF.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher CPF");
+            jtfCPF.requestFocus();
+        } else if (jtfEndereco.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher nome");
+            jtfEndereco.requestFocus();
+        } else if (jftftelefone.getValue() == null) {
+            JOptionPane.showMessageDialog(this, "Preencher Telefone");
+            jftftelefone.requestFocus();
+        }
+    } // fim do valida imputs
+
+    public void addRowToTable() {
+        DefaultTableModel model = (DefaultTableModel) jtClientes.getModel();
+        model.getDataVector().removeAllElements(); // remove todas as linhas da tabela
+        model.fireTableDataChanged();
+        Object rowData[] = new Object[4];
+        ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+        for (Cliente c : clienteS.getClientes()) {
+            rowData[0] = Validadores.imprimeCPF(c.getCpf());
+            rowData[1] = c.getNomeCliente();
+            rowData[2] = c.getTelefone();
+            rowData[3] = c.getEndereco();
+            model.addRow(rowData);
+
+        }
     }
 
     /**
@@ -78,23 +115,28 @@ public class jfCliente extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 0, 255));
-        jLabel2.setText("Nome");
+        jLabel2.setText("Nome *");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel3.setText("CPF");
+        jLabel3.setText("CPF *");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel4.setText("Endereco");
+        jLabel4.setText("Endereco *");
 
         jlTelefone.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlTelefone.setForeground(new java.awt.Color(0, 0, 204));
-        jlTelefone.setText("Telefone");
+        jlTelefone.setText("Telefone *");
 
         jtfEndereco.setToolTipText("endereco completo");
 
         jtfCPF.setToolTipText("informe somente núnueros");
+        jtfCPF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfCPFFocusLost(evt);
+            }
+        });
         jtfCPF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfCPFActionPerformed(evt);
@@ -200,16 +242,18 @@ public class jfCliente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtfCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtfEndereco)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jtfCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(11, 11, 11)
                         .addComponent(jlTelefone)
-                        .addGap(17, 17, 17)
-                        .addComponent(jftftelefone, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jftftelefone)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel2)
@@ -220,7 +264,7 @@ public class jfCliente extends javax.swing.JFrame {
                 .addComponent(jbSalvar)
                 .addGap(27, 27, 27)
                 .addComponent(jbLimpar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
                 .addComponent(jbEditar)
                 .addGap(18, 18, 18)
                 .addComponent(jbFechar))
@@ -339,6 +383,18 @@ public class jfCliente extends javax.swing.JFrame {
     private void jtfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfNomeActionPerformed
+
+    private void jtfCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfCPFFocusLost
+        // TODO add your handling code here:
+        if (!jtfCPF.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Campo Vazio");
+            if (Validadores.isCPF(jtfCPF.getText())) {
+                JOptionPane.showMessageDialog(this, "CPF inválido",
+                        "Erro CPF", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+    }//GEN-LAST:event_jtfCPFFocusLost
 
     /**
      * @param args the command line arguments

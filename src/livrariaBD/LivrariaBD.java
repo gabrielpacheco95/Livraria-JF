@@ -22,6 +22,7 @@ import services.EditoraServicos;
 import services.LivroServicos;
 import services.VendaLivroServicos;
 import util.Validadores;
+import view.Menu;
 
 /**
  *
@@ -164,6 +165,9 @@ public class LivrariaBD {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Menu jfMenu = new Menu();
+        jfMenu.setVisible(true);
+        /*
         cadCliente.mockClientes();
         cadEditora.mockEditoras();
         cadLivro.mockLivros();
@@ -232,8 +236,8 @@ public class LivrariaBD {
             }
 
         } while (opM != 0); //Sistema
-
-    }
+*/
+    } // Fim da MAIN
 
     private static void editarCliente() {
         System.out.println("-- Editar Cliente --");
