@@ -24,22 +24,28 @@ public class jfCliente extends javax.swing.JFrame {
     public jfCliente() {
         initComponents();
         addRowToTable();
+        jbDeletar.setVisible(false);
     }
 
-    public void validaInputs() {
+    public boolean validaInputs() {
         if (jtfNome.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Preencher nome");
             jtfNome.requestFocus();
+            return false;
         } else if (jtfCPF.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Preencher CPF");
             jtfCPF.requestFocus();
+            return false;
         } else if (jtfEndereco.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Preencher nome");
             jtfEndereco.requestFocus();
+            return false;
         } else if (jftftelefone.getValue() == null) {
             JOptionPane.showMessageDialog(this, "Preencher Telefone");
             jftftelefone.requestFocus();
+            return false;
         }
+        return true;
     } // fim do valida imputs
 
     public void addRowToTable() {
@@ -49,10 +55,10 @@ public class jfCliente extends javax.swing.JFrame {
         Object rowData[] = new Object[4];
         ClienteServicos clienteS = ServicosFactory.getClienteServicos();
         for (Cliente c : clienteS.getClientes()) {
-            rowData[0] = Validadores.imprimeCPF(c.getCpf());
+            rowData[0] =c.getCpf();
             rowData[1] = c.getNomeCliente();
-            rowData[2] = c.getTelefone();
-            rowData[3] = c.getEndereco();
+            rowData[2] = c.getEndereco();
+            rowData[3] = c.getTelefone();
             model.addRow(rowData);
 
         }
@@ -87,6 +93,7 @@ public class jfCliente extends javax.swing.JFrame {
         jbEditar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtClientes = new javax.swing.JTable();
+        jbDeletar = new javax.swing.JButton();
 
         jFormattedTextField2.setText("jFormattedTextField2");
 
@@ -231,6 +238,14 @@ public class jfCliente extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jtClientes);
 
+        jbDeletar.setText("Deletar");
+        jbDeletar.setToolTipText("");
+        jbDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbDeletarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -240,20 +255,13 @@ public class jfCliente extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtfEndereco)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(jlTelefone)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jftftelefone)))
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(jtfCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(jlTelefone)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jftftelefone)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel2)
@@ -261,10 +269,13 @@ public class jfCliente extends javax.swing.JFrame {
                 .addComponent(jtfNome)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jbSalvar)
-                .addGap(27, 27, 27)
+                .addGap(17, 17, 17)
                 .addComponent(jbLimpar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(jbDeletar)
+                .addGap(18, 18, 18)
                 .addComponent(jbEditar)
                 .addGap(18, 18, 18)
                 .addComponent(jbFechar))
@@ -275,6 +286,11 @@ public class jfCliente extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtfEndereco)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -302,7 +318,8 @@ public class jfCliente extends javax.swing.JFrame {
                     .addComponent(jbSalvar)
                     .addComponent(jbLimpar)
                     .addComponent(jbEditar)
-                    .addComponent(jbFechar))
+                    .addComponent(jbFechar)
+                    .addComponent(jbDeletar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -348,6 +365,22 @@ public class jfCliente extends javax.swing.JFrame {
 
     private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
         // TODO add your handling code here:
+        if (validaInputs()) {
+            //pegar dados da tela para salvar
+            int idCliente = 0;
+            String nomeCliente = jtfNome.getText();
+            String cpf = jtfCPF.getText();
+            String cnpj = null;
+            String endereco = jtfEndereco.getText();
+            String telefone = jftftelefone.getText();
+            ClienteServicos ClienteS = ServicosFactory.getClienteServicos();
+
+            Cliente c = new Cliente(idCliente, nomeCliente, cpf, cnpj, endereco, telefone);
+            ClienteS.cadCliente(c);
+            limparCampos();
+            addRowToTable();
+
+        }
     }//GEN-LAST:event_jbSalvarActionPerformed
 
     private void jbFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbFecharActionPerformed
@@ -357,27 +390,40 @@ public class jfCliente extends javax.swing.JFrame {
 
     private void jbLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLimparActionPerformed
         // TODO add your handling code here:
+        if (jbLimpar.getText().equals("limpar")) {
+            limparCampos();
+        } else {
+            limparCampos();
+            jbLimpar.setText("Limpar");
+            jbSalvar.setText("Salvar");
+            jbEditar.setEnabled(false);
+            jtfCPF.setEnabled(true);
+
+        }
+    }//GEN-LAST:event_jbLimparActionPerformed
+    public void limparCampos() {
         jtfCPF.setText("");
         jtfEndereco.setText("");
         jtfNome.setText("");
         jftftelefone.setText("");
         jtfNome.requestFocus();
-    }//GEN-LAST:event_jbLimparActionPerformed
-
+    }
     private void jftftelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jftftelefoneActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_jftftelefoneActionPerformed
 
     private void jtClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtClientesMouseClicked
         // TODO add your handling code here:
         jbEditar.setEnabled(true);
-        jbSalvar.setText("Confirmar");
-        jbLimpar.setEnabled(false);
-        jtfCPF.setEnabled(false);
+        jbDeletar.setVisible(true);
     }//GEN-LAST:event_jtClientesMouseClicked
 
     private void jbEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarActionPerformed
-        // TODO add your handling code here:
+        jbSalvar.setText("Confirmar");
+        jbLimpar.setText("Cancelar");
+        jtfCPF.setEnabled(false);
+        jbDeletar.setVisible(true);
     }//GEN-LAST:event_jbEditarActionPerformed
 
     private void jtfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNomeActionPerformed
@@ -395,6 +441,27 @@ public class jfCliente extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jtfCPFFocusLost
+
+    private void jbDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeletarActionPerformed
+        // TODO add your handling code here:
+        int linha;
+        String cpf;
+        linha = jtClientes.getSelectedRow();
+        cpf = (String) jtClientes.getValueAt(linha, 0);
+        ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+        Object[] resp = {"Sim", "Não"};
+        int resposta = JOptionPane.showOptionDialog(this, "Deseja realmente deletar este CPF? ",
+                "Deletar", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, resp, resp[0]);
+       if (resposta == 0){
+           clienteS.deletarCliente(cpf);
+           addRowToTable();
+           JOptionPane.showMessageDialog(this, "Cliente deletado com sucesso");
+       }else{
+           JOptionPane.showMessageDialog(this, "ok, entendo");
+       }
+     
+
+    }//GEN-LAST:event_jbDeletarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -442,6 +509,7 @@ public class jfCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbDeletar;
     private javax.swing.JButton jbEditar;
     private javax.swing.JToggleButton jbFechar;
     private javax.swing.JButton jbLimpar;
