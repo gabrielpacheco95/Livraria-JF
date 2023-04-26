@@ -40,7 +40,7 @@ public class jfCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Preencher nome");
             jtfEndereco.requestFocus();
             return false;
-        } else if (jftftelefone.getValue() == null) {
+        } else if (jftftelefone.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Preencher Telefone");
             jftftelefone.requestFocus();
             return false;
@@ -55,7 +55,7 @@ public class jfCliente extends javax.swing.JFrame {
         Object rowData[] = new Object[4];
         ClienteServicos clienteS = ServicosFactory.getClienteServicos();
         for (Cliente c : clienteS.getClientes()) {
-            rowData[0] =c.getCpf();
+            rowData[0] = c.getCpf();
             rowData[1] = c.getNomeCliente();
             rowData[2] = c.getEndereco();
             rowData[3] = c.getTelefone();
@@ -110,7 +110,7 @@ public class jfCliente extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerencia Cliente");
 
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
@@ -376,7 +376,12 @@ public class jfCliente extends javax.swing.JFrame {
             ClienteServicos ClienteS = ServicosFactory.getClienteServicos();
 
             Cliente c = new Cliente(idCliente, nomeCliente, cpf, cnpj, endereco, telefone);
-            ClienteS.cadCliente(c);
+            if (jbSalvar.getText().equals("Salvar")) {
+                ClienteS.cadCliente(c);
+            } else {
+                ClienteS.atualizarCliente(c);
+                jbLimpar.doClick();
+            }
             limparCampos();
             addRowToTable();
 
@@ -424,6 +429,20 @@ public class jfCliente extends javax.swing.JFrame {
         jbLimpar.setText("Cancelar");
         jtfCPF.setEnabled(false);
         jbDeletar.setVisible(true);
+
+        // carregar dados da tabela no formulario
+        int linha;
+        linha = jtClientes.getSelectedRow();
+        String cpf = (String) jtClientes.getValueAt(linha, 0);
+        String nome = (String) jtClientes.getValueAt(linha, 1);
+        String endereco = (String) jtClientes.getValueAt(linha, 2);
+        String telefone = (String) jtClientes.getValueAt(linha, 3);  
+        jtfCPF.setText(cpf);
+        jtfNome.setText(nome);
+        jtfEndereco.setText(endereco);
+        jftftelefone.setText(telefone);
+        jtfNome.requestFocus();
+
     }//GEN-LAST:event_jbEditarActionPerformed
 
     private void jtfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNomeActionPerformed
@@ -452,14 +471,14 @@ public class jfCliente extends javax.swing.JFrame {
         Object[] resp = {"Sim", "Não"};
         int resposta = JOptionPane.showOptionDialog(this, "Deseja realmente deletar este CPF? ",
                 "Deletar", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, resp, resp[0]);
-       if (resposta == 0){
-           clienteS.deletarCliente(cpf);
-           addRowToTable();
-           JOptionPane.showMessageDialog(this, "Cliente deletado com sucesso");
-       }else{
-           JOptionPane.showMessageDialog(this, "ok, entendo");
-       }
-     
+        if (resposta == 0) {
+            clienteS.deletarCliente(cpf);
+            addRowToTable();
+            JOptionPane.showMessageDialog(this, "Cliente deletado com sucesso");
+        } else {
+            JOptionPane.showMessageDialog(this, "ok, entendo");
+        }
+
 
     }//GEN-LAST:event_jbDeletarActionPerformed
 

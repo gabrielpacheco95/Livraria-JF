@@ -4,6 +4,13 @@
  * and open the template in the editor.
  */
 package view;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Editora;
+import services.EditoraServicos;
+import services.Servicos;
+import services.ServicosFactory;
+import util.Validadores;
 
 /**
  *
@@ -16,8 +23,50 @@ public class jfEditora extends javax.swing.JFrame {
      */
     public jfEditora() {
         initComponents();
+         addRowToTable();
+        jbDeletar.setVisible(false);
     }
+ public boolean validaInputs() {
+        if (jtftNomeEditora.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher nome");
+            jtftNomeEditora.requestFocus();
+            return false;
+        } else if (jtfCnpj.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher CNPJ");
+            jtfCnpj.requestFocus();
+            return false;
+        } else if (jtfEndereco.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher nome");
+            jtfEndereco.requestFocus();
+            return false;
+        } else if (jftfTelefone.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher Telefone");
+            jftfTelefone.requestFocus();
+            return false;
+        } else if (jtfGerente.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Preencher Gerente");
+            jtfGerente.requestFocus();
+            return false;
+        }
+        return true;
+    } // fim do valida imputs
 
+    public void addRowToTable() {
+        DefaultTableModel model = (DefaultTableModel) jtEditora.getModel();
+        model.getDataVector().removeAllElements(); // remove todas as linhas da tabela
+        model.fireTableDataChanged();
+        Object rowData[] = new Object[5];
+        EditoraServicos editoraS = ServicosFactory.getEditoraServicos();
+        for (Editora c : editoraS.getEditoras()) {
+            rowData[0] = c.getCpf();
+            rowData[1] = c.getNomeCliente();
+            rowData[2] = c.getEndereco();
+            rowData[3] = c.getTelefone();
+            rowData[4] = 
+            model.addRow(rowData);
+
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,19 +82,20 @@ public class jfEditora extends javax.swing.JFrame {
         jlNomeEditora = new javax.swing.JLabel();
         jlCnpj = new javax.swing.JLabel();
         jlEndereco = new javax.swing.JLabel();
-        jtTELEFONE = new javax.swing.JLabel();
+        jftfTELEFONE = new javax.swing.JLabel();
         jlGerente = new javax.swing.JLabel();
-        jtNomeEditora = new javax.swing.JTextField();
-        jtGerente = new javax.swing.JTextField();
-        jtEndereco = new javax.swing.JTextField();
-        jtCnpj = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        jtftNomeEditora = new javax.swing.JTextField();
+        jtfGerente = new javax.swing.JTextField();
+        jtfEndereco = new javax.swing.JTextField();
+        jtfCnpj = new javax.swing.JTextField();
+        jftfTelefone = new javax.swing.JTextField();
         jToggleButton1 = new javax.swing.JToggleButton();
         jtLimpar = new javax.swing.JToggleButton();
         jToggleButton3 = new javax.swing.JToggleButton();
         jtCancelar = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtEditora = new javax.swing.JTable();
+        jbDeletar = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,45 +120,51 @@ public class jfEditora extends javax.swing.JFrame {
         jlEndereco.setForeground(new java.awt.Color(0, 0, 255));
         jlEndereco.setText("Endereco");
 
-        jtTELEFONE.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jtTELEFONE.setForeground(new java.awt.Color(0, 0, 255));
-        jtTELEFONE.setText("Telefone");
+        jftfTELEFONE.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jftfTELEFONE.setForeground(new java.awt.Color(0, 0, 255));
+        jftfTELEFONE.setText("Telefone");
 
         jlGerente.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlGerente.setForeground(new java.awt.Color(0, 0, 255));
         jlGerente.setText("Gerente");
 
-        jtNomeEditora.addActionListener(new java.awt.event.ActionListener() {
+        jtftNomeEditora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtNomeEditoraActionPerformed(evt);
+                jtftNomeEditoraActionPerformed(evt);
             }
         });
 
-        jtEndereco.addActionListener(new java.awt.event.ActionListener() {
+        jtfGerente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtEnderecoActionPerformed(evt);
+                jtfGerenteActionPerformed(evt);
             }
         });
 
-        jtCnpj.addActionListener(new java.awt.event.ActionListener() {
+        jtfEndereco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtCnpjActionPerformed(evt);
+                jtfEnderecoActionPerformed(evt);
             }
         });
-        jtCnpj.addKeyListener(new java.awt.event.KeyAdapter() {
+
+        jtfCnpj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfCnpjActionPerformed(evt);
+            }
+        });
+        jtfCnpj.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtCnpjKeyTyped(evt);
+                jtfCnpjKeyTyped(evt);
             }
         });
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        jftfTelefone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                jftfTelefoneActionPerformed(evt);
             }
         });
-        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+        jftfTelefone.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField5KeyTyped(evt);
+                jftfTelefoneKeyTyped(evt);
             }
         });
 
@@ -135,9 +191,8 @@ public class jfEditora extends javax.swing.JFrame {
         });
 
         jtCancelar.setText("Cancelar");
-        jtCancelar.setActionCommand("Cancelar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtEditora.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null}
             },
@@ -145,7 +200,14 @@ public class jfEditora extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtEditora);
+
+        jbDeletar.setLabel("Deletar");
+        jbDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbDeletarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -159,32 +221,34 @@ public class jfEditora extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jlNomeEditora)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jtNomeEditora))
+                        .addComponent(jtftNomeEditora))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jlGerente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtGerente))
+                        .addComponent(jtfGerente))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jlCnpj)
                         .addGap(14, 14, 14)
-                        .addComponent(jtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jtTELEFONE)
+                        .addComponent(jftfTELEFONE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField5))
+                        .addComponent(jftfTelefone))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jlEndereco)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtEndereco))
+                        .addComponent(jtfEndereco))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jToggleButton1)
                         .addGap(18, 18, 18)
                         .addComponent(jtLimpar)
-                        .addGap(79, 79, 79)
+                        .addGap(36, 36, 36)
+                        .addComponent(jbDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jToggleButton3)
-                        .addGap(18, 18, 18)
+                        .addGap(35, 35, 35)
                         .addComponent(jtCancelar)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(25, 25, 25)))
                 .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
         );
@@ -198,33 +262,35 @@ public class jfEditora extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlNomeEditora)
-                    .addComponent(jtNomeEditora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtftNomeEditora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlCnpj)
-                            .addComponent(jtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jtfCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(13, 13, 13))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jtTELEFONE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jftfTELEFONE)
+                            .addComponent(jftfTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlEndereco)
-                    .addComponent(jtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlGerente)
-                    .addComponent(jtGerente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfGerente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton1)
-                    .addComponent(jtLimpar)
-                    .addComponent(jToggleButton3)
-                    .addComponent(jtCancelar))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jToggleButton1)
+                        .addComponent(jtLimpar)
+                        .addComponent(jToggleButton3)
+                        .addComponent(jtCancelar))
+                    .addComponent(jbDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
                 .addContainerGap())
@@ -246,17 +312,17 @@ public class jfEditora extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jtNomeEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtNomeEditoraActionPerformed
+    private void jtftNomeEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtftNomeEditoraActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtNomeEditoraActionPerformed
+    }//GEN-LAST:event_jtftNomeEditoraActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void jftfTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jftfTelefoneActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_jftfTelefoneActionPerformed
 
-    private void jtEnderecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtEnderecoActionPerformed
+    private void jtfEnderecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfEnderecoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtEnderecoActionPerformed
+    }//GEN-LAST:event_jtfEnderecoActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
@@ -264,23 +330,23 @@ public class jfEditora extends javax.swing.JFrame {
 
     private void jtLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtLimparActionPerformed
         // TODO add your handling code here:
-        jtNomeEditora.setText("");
-        jtEndereco.setText("");
-        jtCnpj.setText("");
-        jTextField5.setText("");
-        jtGerente.setText("");
-        jtNomeEditora.requestFocus();
+        jtftNomeEditora.setText("");
+        jtfEndereco.setText("");
+        jtfCnpj.setText("");
+        jftfTelefone.setText("");
+        jtfGerente.setText("");
+        jtftNomeEditora.requestFocus();
     }//GEN-LAST:event_jtLimparActionPerformed
 
     private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton3ActionPerformed
 
-    private void jtCnpjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtCnpjActionPerformed
+    private void jtfCnpjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCnpjActionPerformed
        
-    }//GEN-LAST:event_jtCnpjActionPerformed
+    }//GEN-LAST:event_jtfCnpjActionPerformed
 
-    private void jtCnpjKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtCnpjKeyTyped
+    private void jtfCnpjKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCnpjKeyTyped
         String number = "0123456789";
         if (jlCnpj.getText().length() < 11) {
             if (!number.contains(evt.getKeyChar() + "")) {
@@ -289,18 +355,26 @@ public class jfEditora extends javax.swing.JFrame {
         } else {
             evt.consume();
         }
-    }//GEN-LAST:event_jtCnpjKeyTyped
+    }//GEN-LAST:event_jtfCnpjKeyTyped
 
-    private void jTextField5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyTyped
+    private void jftfTelefoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jftfTelefoneKeyTyped
        String number = "0123456789";
-        if (jtTELEFONE.getText().length() < 11) {
+        if (jftfTELEFONE.getText().length() < 11) {
             if (!number.contains(evt.getKeyChar() + "")) {
                 evt.consume();
             }
         } else {
             evt.consume();
         }
-    }//GEN-LAST:event_jTextField5KeyTyped
+    }//GEN-LAST:event_jftfTelefoneKeyTyped
+
+    private void jbDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeletarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbDeletarActionPerformed
+
+    private void jtfGerenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfGerenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfGerenteActionPerformed
     
     /**
      * @param args the command line arguments
@@ -342,20 +416,21 @@ public class jfEditora extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton3;
+    private java.awt.Button jbDeletar;
+    private javax.swing.JLabel jftfTELEFONE;
+    private javax.swing.JTextField jftfTelefone;
     private javax.swing.JLabel jlCnpj;
     private javax.swing.JLabel jlEndereco;
     private javax.swing.JLabel jlGerente;
     private javax.swing.JLabel jlNomeEditora;
     private javax.swing.JToggleButton jtCancelar;
-    private javax.swing.JTextField jtCnpj;
-    private javax.swing.JTextField jtEndereco;
-    private javax.swing.JTextField jtGerente;
+    private javax.swing.JTable jtEditora;
     private javax.swing.JToggleButton jtLimpar;
-    private javax.swing.JTextField jtNomeEditora;
-    private javax.swing.JLabel jtTELEFONE;
+    private javax.swing.JTextField jtfCnpj;
+    private javax.swing.JTextField jtfEndereco;
+    private javax.swing.JTextField jtfGerente;
+    private javax.swing.JTextField jtftNomeEditora;
     // End of variables declaration//GEN-END:variables
 }
