@@ -37,7 +37,7 @@ public class jfCliente extends javax.swing.JFrame {
             jtfCPF.requestFocus();
             return false;
         } else if (jtfEndereco.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Preencher nome");
+            JOptionPane.showMessageDialog(this, "Preencher Endereco");
             jtfEndereco.requestFocus();
             return false;
         } else if (jftftelefone.getText().equals("")) {
@@ -210,17 +210,17 @@ public class jfCliente extends javax.swing.JFrame {
 
         jtClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {null, null, null, null, null}
             },
             new String [] {
-                "CPF", "Nome", "Endereço", "Telefone"
+                "CPF", "Nome", "Endereço", "Telefone", "Gerente"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
